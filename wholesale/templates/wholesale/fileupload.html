@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload File</title>
+    {% load static %}
+    <script src="{% static 'wholesale/jquery.js' %}"></script>
+    <script src="{% static 'wholesale/fileupload.js' %}"></script>
+</head>
+<body>
+<h1>Select a file to upload:</h1>
+  <form method="post" enctype="multipart/form-data" action="/wholesale/customer/fileupload/process/">
+    {% csrf_token %}
+    <input type="file" name="myfile" id="myfile"/>
+      <br/>
+      <br />
+      <p id="file_err">{{file_err}}</p>
+    <button type="submit" id="submit_file" >Upload</button>
+  </form>
+<img src="{% static 'wholesale/ajax-loader.gif'%}" alt="Loader Image" id="loader_image" style="width:304px;height:304px;" />
+</body>
+</html>

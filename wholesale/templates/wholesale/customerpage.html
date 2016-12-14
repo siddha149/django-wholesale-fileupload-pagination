@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{cust.Firstname}} {{cust.Lastname}}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href=" {% static 'wholesale/style.css' %}" />
+    <script src="{% static 'wholesale/jquery.js' %}"></script>
+    <script src="{% static 'wholesale/customerpage.js' %}"></script>
+</head>
+<body>
+<h1>Your Orders</h1>
+{%if corders %}
+<table>
+    <tr>
+        <th>Order Id</th>
+        <th>Product Name</th>
+        <th>Quantity</th>
+        <th>Amount</th>
+        <th>Delete Order</th>
+    </tr>
+    {% for ord in corders %}
+    <tr id="ord{{ord.id}}">
+        <td id="id{{ord.id}}">{{ord.id}}</td>
+        <td id="Pid{{ord.id}}">{{ord.Pid}}</td>
+        {% csrf_token %}
+        <td id="Qty{{ord.id}}" contenteditable="true">{{ord.Qty}}</td>
+        <td id ="Amount{{ord.id}}">{{ord.Amount}}</td>
+        {% csrf_token %}
+        <td><button onclick="deleterow({{ord.id}},{{cust.id}})">DELETE</button></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<h3>No orders found</h3>
+{% endif %}
+
+<h1>You files</h1>
+{% if documents%}
+<ul>
+    {% for doc in documents%}
+    <li>{{doc.document.name}}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<h3>No files found</h3>
+{% endif %}
+
+<h1>Products Available</h1>
+<table>
+    <tr>
+        <th>Product Id</th>
+        <th>Product Name</th>
+        <th>Product Price</th>
+    </tr>
+    {% for prod in products%}
+    <tr>
+        <td>{{prod.id}}</td>
+        <td>{{prod.Name}}</td>
+        <td>{{prod.Price}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br/>
+<form action="/wholesale/customer/{{cust.id}}/order/" method="get">
+    <input type="submit" value="New Order" />
+</form>
+<br/>
+<form action="/wholesale/customer/fileupload" method="get">
+    <input type="submit" value="Upload a file"/>
+</form>
+<br/>
+<form action="/wholesale/logoutpage" method="get">
+    <input type="submit" value="LOGOUT" />
+</form>
+</body>
+</html>
